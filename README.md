@@ -26,7 +26,7 @@ Set Up
 * Clone the [repo](https://stash.air-watch.com/users/akochhar/repos/tunnel-server-observability/browse) on Linux VM OR download to your local,zip the entire repo and transfer it to VM.
 * Login to VM
 * Go to directory where repo is cloned or unzip it if zipped.
-* open `.env` file in `tunnel-server-aio` directory and fill in the below information
+* open [.env](./.env) file in this directory and fill in the below information
 ```
 TELEGRAF_HOST=<LINUX VM IP>
 
@@ -48,7 +48,7 @@ GRAFANA_PLUGINS=grafana-piechart-panel
 
 TUNNEL_SERVER_IP=<TUNNEL SERVER IP> --> Only one server supported right now
 ```
-* Go to dir `tunnel-server-aio` and run `docker-compose up --build --force-recreate -d`
+* Run `docker-compose up --build --force-recreate -d`
 * Open any browser on your local OR any machine which has connectivity to the Linux VM and type `http://<linux-vm-ip>:3000`
     * You can view the logs and stats here.
 
