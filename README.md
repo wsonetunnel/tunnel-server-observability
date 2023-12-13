@@ -23,7 +23,7 @@ Set Up
         * Retention policy ___TBD___
     * Ensure, docker is installed on Linux VM. Run `docker version` to confirm the same.
     * Start docker using `systemctl start docker`
-* Clone the [repo](https://stash.air-watch.com/users/akochhar/repos/tunnel-server-observability/browse) on Linux VM OR download to your local,zip the entire repo and transfer it to VM.
+* Clone the repo on Linux VM OR download to your local,zip the entire repo and transfer it to VM.
 * Login to VM
 * Go to directory where repo is cloned or unzip it if zipped.
 * open [.env](./.env) file in this directory and fill in the below information
