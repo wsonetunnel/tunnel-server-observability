@@ -1,0 +1,275 @@
+Document: SNMP Agent Notifications for VROPS, VRNI, NSX,  NSX Manager, and ESXi and Virtual Center Server
+Security: public data
+Author: mrm@vmware.com <Michael R. MacFaden>
+Date: :  Tue Apr 21 14:50:09 PDT 2020
+Version: 1.16
+Source: http://kb.vmware.com/kb/2054359
+
+Introduction:
+
+Notifications on VROPS, VRNI, ESXi, NSX, TUNNEL, and VCSA are composed from IETF standard
+and VMWARE enterprise MIB module documents. ESXi may also generate 3rd party notifications
+from any vib/CIM providers installed. They may generate OEM events using their enterprise oids.
+
+VRNI MIB modules were reimplemented in 3.9 release and reused existing oids are are thus
+not backward compatible and will conflict if both versions of mib modules are imported into same managment
+system. The obsolete/ directory contains prior VRNI mib modules.
+
+VROPS MIB modules switched to new oids in 7.0 release and replaced
+VMWARE-VCOPS-EVENT-MIB.mib which is now obsolete.
+
+VMWARE-TUNNEL-MIB and its snmp agent capability mib are described here:
+https://docs.vmware.com/en/Unified-Access-Gateway/3.6/com.vmware.uag-36-deploy-config.doc/GUID-F71E6283-E24B-49F5-8AC6-D28915CD41AD.html
+
+All ESX VMware MIB modules are compatible back to ESX 2.0, always load the latest set to
+manage all vesions of ESXi and ESX Classic. The VMWARE-OBSOLETE-MIB contains any obsolete
+objects and would be loaded when running older versions of software. See the VMWARE-*-AGENTCAP-MIB
+for which releases of code provide what versions of MIB modules.
+
+Virtual Center has two snmp agents in Virtual Center Appliance starting in 6.x release cycle.
+VC Daemon presently only supports SNMPv1. VCSA supports SNMPv1/v2c/v3.
+
+Here is a summary of the MIB modules that define notifications which are sent on the wire
+as either SNMPv1 Trap Protocol data units (PDUs) or SNMPv3 Trap PDU for VCSA and ESXi,
+NSX supports full SNMPv1/v2c/v3 traps, VMWARE-NSX-MANAGER only supports SNMPv2c traps.
+Review the respective *AGENTCAP* to determine what release supports which version of
+a given mib module.
+
+Example output is also provided.
+
+Configuring notifications:
+William Lam wrote up how to configure trap/inform here for ESXi.
+http://blogs.vmware.com/vsphere/2012/11/configuring-snmp-v1v2cv3-using-esxcli-5-1.html
+Documentation for VCSA SNMP agent:
+VCSA https://pubs.vmware.com/vsphere-60/topic/com.vmware.vsphere.vcsa.doc/GUID-3695CE84-C6DF-497E-BA4E-2B341CC366C5.html
+Documentation, 5.1, 5.5, 6.0 for CLI
+http://pubs.vmware.com/vsphere-51/index.jsp?topic=%2Fcom.vmware.vsphere.monitoring.doc%2FGUID-346CDDC6-8928-466F-A356-C8DAA6112439.html
+Configuring NSX: https://www.vmware.com/support/pubs/nsx_pubs.html
+
+
+Current VMware KB Aricles on SNMP:
+
+* Downloading MIB modules http://kb.vmware.com/kb/1013445
+* Listing of all OIDs by type, mib module and name:  http://kb.vmware.com/kb/2054359
+* Debugging notification (trap/inform) reception http://kb.vmware.com/kb/2035445
+* Configuring SNMPv3 inform remotre users in ESXi SNMP agent: http://kb.vmware.com/kb/2033377
+* Reverse Poll Feature aka SNMP Trap is repeated every 5 minutes  http://ikb.vmware.com/kb/2020271
+* Timeouts and SNMP https://ikb.vmware.com/kb/2100602
+* Timeouts in ESXi snmp in storage apis:  https://ikb.vmware.com/kb/2105674
+* Understanding Layer 2 networking as reported by ESXi SNMP  http://kb.vmware.com/kb/2118059
+* Monitoring VCSA using SNMP (2145018)  http://kb.vmware.com/kb/2145018
+
+VMworld 2016 information:
+http://blogs.vmware.com/vsphere/2016/08/vmworld-2016-vcenter-server-sessions.html
+Session Title: Understand the role SNMP agents play in a VSPHERE Stack
+http://vmware.mediasite.com/mediasite/Play/4eab4abb038344f98c2c1e6ef8b7e2fa1d?catalog=dbf1ec28-2557-4dd3-a381-e5fe4ceabc40
+
+Since ESXi 5.x, snmp agent should now be configured with 'esxcli system snmp' instead of vicfg-snmp
+script. the vicfg-snmp script is found on VCSA appliance in the bash shell and snmp.set command
+in the appliancesh shell.
+
+vicfg-snmp will continue to work. The vicfg-snmp uses VIM API objects will only ever support SNMPv1.
+The command line flags have been preserved from the RCLI to esxcli 
+this allows for easy substitution of 'vicfg-snmp' to 'esxcli system snmp' for example:
+  esxcli system snmp --hwsrc sensor
+  esxcli system snmp --no traps <oid[,oid]>  # see list of oids in Appendix A below
+  esxcli system snmp set -t 192.0.2.1/mytesttrapcom --enable 1  # turn on snmp agent and sent traps to one destination.
+
+  # SNMPv3 support for informs has been available since ESX 5.1, with no security (noAuthNoPriv)
+  # is equivalent to SNMPv1
+  # To define a user and inform target for that user
+  esxcli system snmp set -u john_doe/-/-/none -i 192.0.2.1@1162/john_doe/none/inform
+
+Configuring notifications with RCLI command (ESX 3.x to ESX 5.0):
+First one provides a backward compatibility switch for VMWARE-ENV-MIB for ESX
+releases prior to 5.0 use the cmd:
+  vicfg-snmp --hwsrc sensors  # switch to pre-ESXi 5.0 notifcation format
+Second, one can now filter out/stop sending notifications. Just provide the
+oid in the form enterprise.0.trapid
+  vicfg-snmp --notraps 1.3.6.1.4.1.6876.1.0.302,1.3.6.1.4.1.6876.1.0.303
+
+ESXi NOTIFICATIONS:
+
+SNMPv2-MIB (http://www.ietf.org/rfc/rfc3418.txt)
+  coldStart  -- sent when ESX reboots
+  warmStart  -- sent when vmware-hostd process restarts
+
+IF-MIB (http://www.ietf.org/rfc/rfc2863.txt)
+  linkDown  -- Physical interface changed to down state
+  linkUp  -- Physical interface changed to down state
+   When one receives these notifications, they will contain the ifIndex which
+   when used to poll the ifTable shall see the following
+   managed objects change state: ifLastChange, ifSpeed, ifOperStatus change state)
+
+VMWARE-VMINFO-MIB
+ vmPoweredOn TRAP-TYPE
+   VARIABLES { vmID, vmConfigFile, vmDisplayName }
+   DESCRIPTION
+    "This trap is sent when a virtual machine is powered on from a suspended
+     or a powered off state. The origin of this event can be several:
+     for instance may be operator initiated, existing vmx process reconnects to control subsystem.
+     NOTE: vms powered up due to VMotion are not reported. Upon receiving this notification client applications should
+     poll the vmwVmTable to obtain current status."
+   ::= 1
+
+vmPoweredOff TRAP-TYPE
+   VARIABLES { vmID, vmConfigFile, vmDisplayName }
+   DESCRIPTION
+    "This trap is sent when a virtual machine is powered off. The origin of this event can be several:
+     for instance may be operator initiated, vmx process terminating abnormally. NOTE: vms powered down due
+     to VMotion are not reported. Upon receiving this notification client applications should
+     poll the vmwVmTable to obtain current status."
+   ::= 2
+
+vmHBLost TRAP-TYPE
+   VARIABLES { vmID, vmConfigFile, vmDisplayName }
+   DESCRIPTION
+    "This trap is sent when a virtual machine detects a loss in guest heartbeat. The Guest heartbeat
+     is only sent if VMware Tools are installed in the Guest OS. Control process will send this event whenever it
+     determines the number of guest heartbeats for a given period of time have not been received.
+     Upon receiving this notification client applications should
+     poll the vmwVmTable to obtain current status."
+   ::= 3
+
+vmHBDetected TRAP-TYPE
+   VARIABLES { vmID, vmConfigFile, vmDisplayName }
+   DESCRIPTION
+    "This trap is sent when a virtual machine detects or regains the required number of guest heartbeats
+     for a given period of time. This is only sent if VMware tools are installed in the Guest OS.
+     Upon receiving this notification client applications should
+     poll the vmwVmTable to obtain current status."
+   ::= 4
+
+vmSuspended TRAP-TYPE
+   VARIABLES { vmID, vmConfigFile, vmDisplayName }
+   DESCRIPTION
+    "This trap is sent when a virtual machine is suspended. The origin of this event may be several: operator
+     initiated, by software api clients, and by other means.
+     Upon receiving this notification client applications should
+     poll the vmwVmTable to obtain current status."
+   ::= 5
+
+VMWARE-CIMOM-MIB
+  The sfcbd agent in ESXi starting in ESX 5.0 will send a heartbeat once every
+  5 minutes. This duration can be changed or disabled within sfcbd or filtered
+  at the snmp agent (see Appendix A)
+  vmwCimOmHeartbeat TRAP-TYPE
+    VARIABLES { vmwEnvIndicationTime }
+    DESCRIPTION
+        "This notification, if the agent is so configured, will be sent
+         on a periodic basis to indicate cimom indication delivery is functioning."
+    ::= { vmwCimOmNotifications 401 }
+
+   Update the sfcbc configuration etc/sfcb/sfcb.cfg" and add the key "heartbeatInterval"
+   to the number of seconds it should be sent.
+
+VMWARE-ENV-MIB
+   Starting with ESXi 5.0, VMware enterprise hardware related notifcations are reported in
+   the specific identifier field of SNMPv1 trap PDU as follow:
+VMWARE-ENV-MIB vmwEnvHardwareEvent            notification 1.3.6.1.4.1.6876.0.301
+VMWARE-ENV-MIB vmwESXEnvHardwareEvent         notification 1.3.6.1.4.1.6876.4.1.0.301
+VMWARE-ENV-MIB vmwESXEnvHardwareAlert         notification 1.3.6.1.4.1.6876.4.1.0.302
+VMWARE-ENV-MIB vmwESXEnvBatteryAlert          notification 1.3.6.1.4.1.6876.4.1.0.303
+VMWARE-ENV-MIB vmwESXEnvChassisAlert          notification 1.3.6.1.4.1.6876.4.1.0.304
+VMWARE-ENV-MIB vmwESXEnvThermalAlert          notification 1.3.6.1.4.1.6876.4.1.0.305
+VMWARE-ENV-MIB vmwESXEnvDiskAlert             notification 1.3.6.1.4.1.6876.4.1.0.306
+VMWARE-ENV-MIB vmwESXEnvPowerAlert            notification 1.3.6.1.4.1.6876.4.1.0.307
+VMWARE-ENV-MIB vmwESXEnvProcessorAlert        notification 1.3.6.1.4.1.6876.4.1.0.308
+VMWARE-ENV-MIB vmwESXEnvMemoryAlert           notification 1.3.6.1.4.1.6876.4.1.0.309
+VMWARE-ENV-MIB vmwESXEnvBIOSAlert             notification 1.3.6.1.4.1.6876.4.1.0.310
+
+An example:
+      2010-06-11 19:59:34 promc-2n-dhcp119.eng.vmware.com [10.20.104.119] (via UDP: [10.20.104.119]:50569) TRAP, SNMP v1, community mrm-pc
+                .1.3.6.1.4.1.6876.4.1 Enterprise Specific Trap (302)
+                Uptime: 0:22:06.22
+                .1.3.6.1.4.1.6876.4.30.10 = STRING: RawIpmiProvider
+                .1.3.6.1.4.1.6876.4.30.9 = STRING: 44454c4c-5700-1035-8038-b4c04f594231
+                .1.3.6.1.4.1.6876.4.30.8 = Wrong Type (should be INTEGER): 2
+                .1.3.6.1.4.1.6876.4.30.7 = STRING: root/cimv2:OMC_DiscreteSensor.DeviceID="81.0.32.2",CreationClassName="OMC_DiscreteSensor",SystemName="44454c4c-5700-1035-8038-b4c04f594231",SystemCreationClassName="O MC_UnitaryComputerSystem"
+                .1.3.6.1.4.1.6876.4.30.6 = STRING: OMC_UnitaryComputerSystem
+                .1.3.6.1.4.1.6876.4.30.5 = Wrong Type (should be INTEGER): 5
+                .1.3.6.1.4.1.6876.4.30.4 = Wrong Type (should be INTEGER): 0
+                .1.3.6.1.4.1.6876.4.30.3 = STRING: 12848-49-55,48:55:49.49,148:515552534648555648505143484848
+                .1.3.6.1.4.1.6876.4.30.2 = STRING: 12848-49-55,48:55:49.49,148:515653544648484848484843484848
+                .1.3.6.1.4.1.6876.4.30.1 = STRING: Assert + Event Logging Disabled Log area reset/cleared
+
+Environmental/hardware related notifications in VMWARE-ENV-MIB are the same content as found in ESXi CIM Indications.
+
+Prior to ESXi 5.0, this is the trap one would get:
+  vmwEnvHardwareEvent TRAP-TYPE
+      VARIABLES { vmwSubsystemType, vmwHardwareStatus, vmwEventDescription, vmwEnvHardwareTime }
+      DESCRIPTION
+          "This notification, if the agent is so configured, may be sent when
+           the ESX Operating System has detected a material change in
+           physical condition of the hardware"
+      ::= 301
+
+    This generic notification depends on the CIM subsystem mappings to discrete IPMI sensors.
+    For example on a Dell R805, one might see one or more alarms as follows:
+    2007-11-01 16:15:42 esx014.eng.vmware.com [10.17.21.14] (via 10.17.21.14) TRAP, SNMP v1, community private
+	SNMPv2-SMI::VMWARE-PRODUCTS-MIB::vmwESX Enterprise Specific Trap (301) Uptime: 0:00:06.76
+	VMWARE-ENV-MIB::vmwSubsystemType.1 = INTEGER: unknown(1)
+        VMWARE-ENV-MIB::vmwHardwareStatus.1 = INTEGER: critical(4)
+        VMWARE-ENV-MIB::vmwEventDescription.1 = STRING: "USB Over-current 65 for BIOS 1"
+        VMWARE-ENV-MIB::vmwEnvHardwareTime.1 = Timeticks: (675) 0:00:06.75
+
+        External RAID enclosure configured to RAID 5, pull cable from one of the disk and this is sent:
+
+        2007-11-14 10:11:15 scho1-dev.eng.vmware.com [10.20.110.134] (via 10.20.110.134) TRAP, SNMP v1, community private
+        VMWARE-PRODUCTS-MIB::vmwESX Enterprise Specific Trap (301) Uptime: 0:03:11.14
+        VMWARE-ENV-MIB::vmwSubsystemType.1 = INTEGER: raidController(9)
+        VMWARE-ENV-MIB::vmwHardwareStatus.1 = INTEGER: marginal(3)
+        VMWARE-ENV-MIB::vmwERING: "RAID1 Virtual Disk 0 of Controller 0"
+        VMWARE-ENV-MIB::vmwEnvHardwareTime.1 = Timeticks: (19114) 0:03:11.14
+
+        NOTE: Given the specific hardware above for example
+         one would next consult the Dell R805 Dell's documentation
+         on IPMI messages for the majority of those listed (not all):
+         http://support.dell.com/support/edocs/software/svradmin/5.5/en/MSG/html/msgch30.htm
+
+EXAMPLES:
+
+2007-11-01 16:14:11 NET-SNMP version 5.1.2 Started.
+# hostd is rebooted while ESX is up, a warmStart trap is sent...
+
+2007-11-01 16:14:36 esx014.eng.vmware.com [10.17.21.14] (via 10.17.21.14) TRAP, SNMP v1, community private
+	SNMPv2-SMI::VMWARE-PRODUCTS-MIB::vmwESX Warm Start Trap (0) Uptime: 0:00:00.02
+
+
+vSPHERE Center Server Notifications
+
+VMWARE-VC-EVENT-MIB:
+
+vmwVCNotifications OBJECT IDENTIFIER ::= {vmwVC 0}
+vpxdAlarm NOTIFICATION-TYPE
+    OBJECTS { vmwVpxdTrapType, vmwVpxdHostName, vmwVpxdVMName,
+              vmwVpxdOldStatus, vmwVpxdNewStatus, vmwVpxdObjValue }
+    STATUS      current
+    DESCRIPTION
+        "This trap is sent when entity alarm status changed."
+    ::= { vmwVCNotifications 201 }
+
+vpxdDiagnostic NOTIFICATION-TYPE
+    STATUS      current
+    DESCRIPTION
+        "This trap is sent on starting or restarting vCenter Server,
+         on requesting a test notification explicitly, and can also be
+         configured to be sent periodically at a specified time interval via
+         vCenter Server configuration."
+    ::= { vmwVCNotifications 202 }
+
+The vpxdAlarm notification is transmitted from vCenter Server on changes in
+alarm state, dictated by the trigger and notification configuration of the
+alarm.
+
+The vpxdDiagnostic notification is used for generating test traps as well as
+generating coldStart traps for vCenter Server starts/restarts.
+The transmission of test traps can be configured through the vCenter Server
+OptionManager interface, or through the vCenter configuration file (vpxd.cfg),
+using the following keys:
+snmp.testTrap.periodic.enable ("true"/"false")
+snmp.testTrap.periodic.period (defaults to 300) (Number of milliseconds)
+snmp.coldStartTrap.enable (defaults to "true") ("true"/"false")
+
+# end of Document
+

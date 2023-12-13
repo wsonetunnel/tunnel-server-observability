@@ -1,0 +1,56 @@
+Date: Thu Apr 05 17:25:00 PDT 2023
+Company: VMware, Inc
+Subject: VMWARE SNMP MIB MODULES
+
+This directory contains mib modules for VMWARE products in SMIv2 (RFC 2578) compliant format.
+MIB module files may also be distributed by the individual VMware products.
+Use the REVISION clause in the MIB module to determine which is the latest
+version to install. MIB modules are always backward compatible.
+
+To load these into various management stations
+software use this suggested order to prevent any lookup
+errors.
+
+For any given VMware product (ESXi, Virtual Center, NSX-MANAGER, ...)
+and version release, to find the set of MIB modules it supports
+please review the agent capability (*-AGENTCAP-MIB) file which maps a
+given product version of ESXi, VCVA, etc to the specific mib module versions its agent supports.
+
+ESXi
+   VMWARE-ESX-AGENTCAP-MIB.mib -- describes the ESXi agent since ESX 5.1 (2009)
+
+Virtual Center Management
+   VMWARE-VA-AGENTCAP-MIB.mib  -- describes SNMPv1/v2/v3 agent since VSPHERE 6.0 (2015)
+
+NSX-V Manager
+   VMWARE-NSX-MANAGER-AGENTCAP-MIB.mib -- describes the SNMPv2c trap only agent in NSX-Manager (2016)
+
+NSX 
+   VMWARE-NSX-AGENTCAP-MIB.mib -- describes full SNMPv1/v2/v3 agent in NSX (2019)
+   Current to the 4.1.0 release.
+
+VROPS
+   VMWARE-VROPS-AGENTCAP-MIB.mib -- describesthe SNMPv2c trap only agent in VCenter Operations (2018)
+
+VRNI
+    VMWARE-VRNI-AGENTCAP-MIB.mib -- describes the SNMPv2c trap only vRealise Log Insight Appliance (2018)
+
+VTSA
+    VMWARE-TUNNEL-SERVER-AGENTCAP-MIB.mib -- describes  the SNMPv1/v2c/v3 agent in  VMware Tunnel Server (2018)
+
+Note: loading the latest version of any given mib module should provide backward compatiblity
+for prior releases. Only one MIB module (NSX-MANAGER) presently may not follow SNMP backward
+compatiblity rules.
+
+Knowledge Base articles:
+
+* OID List http://kb.vmware.com/kb/2054359
+* Downloading MIB modules http://kb.vmware.com/kb/1013445
+* Debugging notifications (trap/inform) reception http://kb.vmware.com/kb/2035445
+* Reverse Poll Feature aka SNMP Trap is repeated every 5 minutes  http://ikb.vmware.com/kb/2020271
+* Timeouts and SNMP https://ikb.vmware.com/kb/2100602
+* Timeouts in ESXi snmp in storage apis:  https://ikb.vmware.com/kb/2105674
+* Understanding Layer 2 networking as reported by ESXi SNMP  http://kb.vmware.com/kb/2118059
+* Monitoring VCSA using SNMP (2145018)  http://kb.vmware.com/kb/2145018
+
+End of document
