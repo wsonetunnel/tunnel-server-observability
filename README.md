@@ -71,10 +71,12 @@ Tests
 Demo
 ----
 Setup
+=======
+**Setup**
 ![Setup](./docs/setup.gif)
 
 ------------
-Dashboard
+**Dashboard**
 ![dashboard](./docs/ui.gif)
 
 Reference documents
