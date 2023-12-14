@@ -70,7 +70,7 @@ Tests
 
 Demo
 ----
-[Setup](./docs/setup.gif)
+![Setup](./docs/setup.gif)
 
 Reference documents
 -------------------
