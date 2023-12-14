@@ -37,63 +37,10 @@ exec gosu grafana /usr/share/grafana/bin/grafana-server  \
 sleep 5
 
 ###############################################################
-# Creating Default Data Source
 
-# Set new Data Source name
-INFLUXDB_DATA_SOURCE="Docker InfluxDB"
-INFLUXDB_DATA_SOURCE_WEB=`echo ${INFLUXDB_DATA_SOURCE} | sed 's/ /%20/g'`
-
-# Set information about grafana host
-
-# Check $INFLUXDB_DATA_SOURCE status
-INFLUXDB_DATA_SOURCE_STATUS=`curl -s -L -i \
- -H "Accept: application/json" \
- -H "Content-Type: application/json" \
- -X GET http://${GRAFANA_USER}:${GRAFANA_PASSWORD}@${GRAFANA_URL}:${GRAFANA_PORT}/api/datasources/name/${INFLUXDB_DATA_SOURCE_WEB} | head -1 | awk '{print $2}'`
-
-#Debug Time!
-curl -s -L -i \
- -H "Accept: application/json" \
- -H "Content-Type: application/json" \
- -X GET http://${GRAFANA_USER}:${GRAFANA_PASSWORD}@${GRAFANA_URL}:${GRAFANA_PORT}/api/datasources/name/${INFLUXDB_DATA_SOURCE_WEB} >>$GF_PATHS_LOGS/grafana.log 2>>$GF_PATHS_LOGS/grafana.log 
-echo "http://${GRAFANA_USER}:${GRAFANA_PASSWORD}@${GRAFANA_URL}:${GRAFANA_PORT}/api/datasources/name/${INFLUXDB_DATA_SOURCE_WEB}" >> $GF_PATHS_LOGS/grafana.log
-echo "Existing INFLUXDB_DATA_SOURCE_STATUS: "$INFLUXDB_DATA_SOURCE_STATUS >> $GF_PATHS_LOGS/grafana.log
 echo "GRAFANA_URL: "$GRAFANA_URL >> $GF_PATHS_LOGS/grafana.log
 echo "GRAFANA_PORT: "$GRAFANA_PORT >> $GF_PATHS_LOGS/grafana.log
 echo "GRAFANA_USER: "$GRAFANA_USER >> $GF_PATHS_LOGS/grafana.log
 echo "GRAFANA_PASSWORD: "$GRAFANA_PASSWORD >> $GF_PATHS_LOGS/grafana.log
-
-# Check if $INFLUXDB_DATA_SOURCE exists
-if [ -z ${INFLUXDB_DATA_SOURCE_STATUS} ] || [ ${INFLUXDB_DATA_SOURCE_STATUS} != 200 ]
-then
-  # If not exists, create one 
-  echo "Data Source: '"${INFLUXDB_DATA_SOURCE}"' not found in Grafana configuration"
-  echo "Creating Data Source: '"$INFLUXDB_DATA_SOURCE"'"
-  curl -L -i \
-   -H "Accept: application/json" \
-   -H "Content-Type: application/json" \
-   -X POST -d '{
-    "name":"'"${INFLUXDB_DATA_SOURCE}"'",
-    "type":"influxdb",
-    "url":"http://'"${INFLUXDB_HOST}"':'"${INFLUXDB_PORT}"'",
-    "access":"proxy",
-    "basicAuth":false,
-    "database": "",
-    "user":"",
-    "jsonData": {"defaultBucket":"'"${DOCKER_INFLUXDB_INIT_BUCKET}"'","httpMode":"POST","organization":"'"${DOCKER_INFLUXDB_INIT_ORG}"'","version":"Flux"},
-     "secureJsonData":{
-        "token": "'"${DOCKER_INFLUXDB_INIT_ADMIN_TOKEN}"'"
-    }}
-  ' \
-  http://${GRAFANA_USER}:${GRAFANA_PASSWORD}@${GRAFANA_URL}:${GRAFANA_PORT}/api/datasources
-  INFLUXDB_DATA_SOURCE_STATUS=`curl -s -L -i \
- -H "Accept: application/json" \
- -H "Content-Type: application/json" \
- -X GET http://${GRAFANA_USER}:${GRAFANA_PASSWORD}@${GRAFANA_URL}:${GRAFANA_PORT}/api/datasources/name/${INFLUXDB_DATA_SOURCE_WEB} | head -1 | awk '{print $2}'`
-  echo "Current INFLUXDB_DATA_SOURCE_STATUS: "$INFLUXDB_DATA_SOURCE_STATUS >> $GF_PATHS_LOGS/grafana.log
-else
-  #Continue if it doesn't exists
-  echo "Data Source '"${INFLUXDB_DATA_SOURCE}"' already exists."
-fi
 
 tail -f $GF_PATHS_LOGS/grafana.log

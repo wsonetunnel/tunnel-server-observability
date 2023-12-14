@@ -63,7 +63,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "ee8a8d4a-e773-4205-b655-5cfb0082fbcb"
+        "uid": "PF3A0F3054C0DA367"
       },
       "fieldConfig": {
         "defaults": {
@@ -142,9 +142,10 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "ee8a8d4a-e773-4205-b655-5cfb0082fbcb"
+            "uid": "PF3A0F3054C0DA367"
           },
-          "query": "from(bucket: v.bucket)\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"snmp\")\n  |> filter(fn: (r) => r[\"_field\"] =~ /^vmw*/)",
+          "hide": false,
+          "query": "// v.windowPeriod is a variable referring to the current optimized window period (currently: $interval)\nfrom(bucket: v.bucket)\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"snmp\")\n  |> filter(fn: (r) => r[\"_field\"] =~ /^vmw*/)",
           "refId": "A"
         }
       ],

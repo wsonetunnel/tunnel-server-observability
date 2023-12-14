@@ -9,3 +9,16 @@ datasources:
     name: Loki
     type: loki
     url: "http://loki:3100/"
+  -
+    name: Influxdb
+    type: influxdb
+    url: http://$INFLUXDB_HOST:$INFLUXDB_PORT
+    access: proxy
+    basicAuth: false
+    jsonData:
+      defaultBucket: $DOCKER_INFLUXDB_INIT_BUCKET
+      httpMode: POST
+      organization: $DOCKER_INFLUXDB_INIT_ORG
+      version: Flux
+    secureJsonData:
+      token: $DOCKER_INFLUXDB_INIT_ADMIN_TOKEN
