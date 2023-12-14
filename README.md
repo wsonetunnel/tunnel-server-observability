@@ -68,6 +68,10 @@ Tests
 
 ![Tunnel Stats and Logs](./docs/grafana.png)
 
+Demo
+----
+[Setup](./docs/setup.gif)
+
 Reference documents
 -------------------
 
