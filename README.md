@@ -70,7 +70,12 @@ Tests
 
 Demo
 ----
+Setup
 ![Setup](./docs/setup.gif)
+
+------------
+Dashboard
+![dashboard](./docs/ui.gif)
 
 Reference documents
 -------------------
