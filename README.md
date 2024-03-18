@@ -51,7 +51,8 @@ GRAFANA_PASSWORD=<GRAFANA PASSWORD>
 GRAFANA_PLUGINS_ENABLED=true
 GRAFANA_PLUGINS=grafana-piechart-panel
 
-TUNNEL_SERVER_IP=<TUNNEL SERVER IP> --> Only one server supported right now
+# Define as "udp://<hostname_or_ip1>:161,udp://<hostname_or_ip2>:161,udp://<hostname_or_ip3>:161"
+SNMP_SERVERS=<TUNNEL SERVER IPS IN ABOVE FORMAT>
 ```
 * Run `docker-compose up --build --force-recreate -d`
 * Open any browser on your local OR any machine which has connectivity to the Linux VM and type `http://<linux-vm-ip>:3000`
@@ -63,10 +64,12 @@ Configuration
 * Configure syslog (Linux VM IP or URL/hostname) on UEM Console and save the configuration.
     * This will send access log to server. Assumption is the syslog server runs on port 514.
     * For application (tunnel server) logs, configure kvp settings as well.Starting Tunnel Server version 23.12, use below KVP to redirect tunnel application and reporter logs to syslog.
+    * udp port 514 is supported.
 
 ![Tunnel KVP](./docs/tunnelkvp.png)
 
-* Tunnel Server container already exposes port 161 for snmp stats. In UAG, enable snmp following guide [here](https://docs.vmware.com/en/Unified-Access-Gateway/2303/uag-deploy-config/GUID-F71E6283-E24B-49F5-8AC6-D28915CD41AD.html)
+* Tunnel Server container already exposes port 161 for snmp stats. In UAG, enable snmp following guide [here](https://docs.vmware.com/en/Unified-Access-Gateway/2303/uag-deploy-config/GUID-F71E6283-E24B-49F5-8AC6-D28915CD41AD.html).
+    * Only snmp v2 is supported.
 
 Tests
 -----
