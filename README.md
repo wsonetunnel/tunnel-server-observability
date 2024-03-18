@@ -25,7 +25,8 @@ Set Up
 * Deploy Linux VM 
     * Chose distribution of your choice, though Alma Linux is recommended for use. You can also choose to download [here](https://almalinux.org/get-almalinux/)
         * Resource recommendation of Linux VM 4 core 16GB 100 GB storage 
-        * Retention policy ___TBD___
+        * Retention policy
+		* For Logs, 7 days of data is retained.
     * Ensure, docker is installed on Linux VM. Run `docker version` to confirm the same.
     * Start docker using `systemctl start docker`
 * Clone the repo on Linux VM OR download to your local,zip the entire repo and transfer it to VM.
