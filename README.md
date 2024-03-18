@@ -3,6 +3,11 @@ Overview
 
 This repo can be used as a recommendation for guidance on setting up tunnel server observability (Logging and Telemetry)
 
+Architecture
+============
+
+![arch](./docs/arch.png)
+
 Pre-reqs
 ========
 
