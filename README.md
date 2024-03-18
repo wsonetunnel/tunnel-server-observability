@@ -59,7 +59,7 @@ SNMP_SERVERS=<TUNNEL SERVER IPS IN ABOVE FORMAT>
 * Open any browser on your local OR any machine which has connectivity to the Linux VM and type `http://<linux-vm-ip>:3000`
     * You can view the logs and stats here.
 
-Configuration (for Logging)
+Configuration (for Application and Access Logs)
 ----------------------------
 
 * Configure syslog (Linux VM IP or URL/hostname) on UEM Console and save the configuration.
