@@ -23,7 +23,7 @@ Set Up
 ------
 
 * Deploy Linux VM 
-    * Chose distribution of your choice, though photonOS template is provided for use. You can also choose to download [here](https://github.com/vmware/photon/wiki/Downloading-Photon-OS)
+    * Chose distribution of your choice, though Alma Linux is recommended for use. You can also choose to download [here](https://almalinux.org/get-almalinux/)
         * Resource recommendation of Linux VM 4 core 16GB 100 GB storage 
         * Retention policy ___TBD___
     * Ensure, docker is installed on Linux VM. Run `docker version` to confirm the same.
