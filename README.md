@@ -27,7 +27,7 @@ Set Up
         * Resource recommendation of Linux VM 4 core 16GB 100 GB storage 
         * Retention policy
             * For Logs, 7 days of data is retained.
-    * Ensure, docker is installed on Linux VM. Run `docker version` to confirm the same.
+    * Ensure, docker and docker-compose is installed on Linux VM. Run `docker version` to confirm the same.
     * Start docker using `systemctl start docker`
 * Clone the repo on Linux VM OR download to your local,zip the entire repo and transfer it to VM.
 * Login to VM
