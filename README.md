@@ -18,8 +18,8 @@ Set Up
 ------
 
 * Deploy Linux VM 
-    * Chose distribution of your choice, though photonOS template is provided for use. You can also choose to download [here](https://github.com/vmware/photon/wiki/Downloading-Photon-OS) 
-        * Resource recommendation of Linux VM 4 core 16GB 100 GB storage ___TBD___
+    * Chose distribution of your choice, though photonOS template is provided for use. You can also choose to download [here](https://github.com/vmware/photon/wiki/Downloading-Photon-OS)
+        * Resource recommendation of Linux VM 4 core 16GB 100 GB storage 
         * Retention policy ___TBD___
     * Ensure, docker is installed on Linux VM. Run `docker version` to confirm the same.
     * Start docker using `systemctl start docker`
@@ -57,7 +57,10 @@ Configuration
 
 * Configure syslog (Linux VM IP or URL/hostname) on UEM Console and save the configuration.
     * This will send access log to server. Assumption is the syslog server runs on port 514.
-    * For application (tunnel server) logs, configure kvp settings as well. ___WIP___
+    * For application (tunnel server) logs, configure kvp settings as well.Starting Tunnel Server version 23.12, use below KVP to redirect tunnel application and reporter logs to syslog.
+
+![Tunnel KVP](./docs/tunnelkvp.png)
+
 * Tunnel Server container already exposes port 161 for snmp stats. In UAG, enable snmp following guide [here](https://docs.vmware.com/en/Unified-Access-Gateway/2303/uag-deploy-config/GUID-F71E6283-E24B-49F5-8AC6-D28915CD41AD.html)
 
 Tests
