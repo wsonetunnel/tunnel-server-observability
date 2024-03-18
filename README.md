@@ -59,18 +59,23 @@ SNMP_SERVERS=<TUNNEL SERVER IPS IN ABOVE FORMAT>
 * Open any browser on your local OR any machine which has connectivity to the Linux VM and type `http://<linux-vm-ip>:3000`
     * You can view the logs and stats here.
 
-Configuration
--------------
+Configuration (for Logging)
+----------------------------
 
 * Configure syslog (Linux VM IP or URL/hostname) on UEM Console and save the configuration.
-    * This will send access log to server. Assumption is the syslog server runs on port 514.
-    * For application (tunnel server) logs, configure kvp settings as well.Starting Tunnel Server version 23.12, use below KVP to redirect tunnel application and reporter logs to syslog.
+    * This will make tunnel server send access logs to observability stack. Assumption is the syslog server runs on port 514.
+    * For application (tunnel server) logs, additional KVP settings can be configured.Starting Tunnel Server version 23.12, use below KVP to redirect tunnel application and reporter logs to syslog.
     * udp port 514 is supported.
 
 ![Tunnel KVP](./docs/tunnelkvp.png)
 
-* Tunnel Server container already exposes port 161 for snmp stats. In UAG, enable snmp following guide [here](https://docs.vmware.com/en/Unified-Access-Gateway/2303/uag-deploy-config/GUID-F71E6283-E24B-49F5-8AC6-D28915CD41AD.html).
-    * Only snmp v2 is supported.
+Configuration (for Telemetry)
+----------------------------
+
+* Tunnel Server container already exposes port 161 for snmp stats.
+* In UAG, enable snmp following guide [here](https://docs.vmware.com/en/Unified-Access-Gateway/2303/uag-deploy-config/GUID-F71E6283-E24B-49F5-8AC6-D28915CD41AD.html).
+* Only snmp v2 is supported.
+* Update `SNMP_SERVERS` section in [.env](./.env) to supply Tunnel Server IPs in the format `udp://<hostname_or_ip1>:161` for Observability stack to pull the snmp stats.
 
 Tests
 -----
