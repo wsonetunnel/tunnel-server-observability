@@ -352,7 +352,7 @@ code.hljs {
 <li>Clone the repo on Linux VM OR download to your local,zip the entire repo and transfer it to VM.</li>
 <li>Login to VM</li>
 <li>Go to directory where repo is cloned or unzip it if zipped.</li>
-<li>open <a href="https://github.com/wsonetunnel/tunnel-server-observability/.env">.env</a> file in this directory and fill in the below information</li>
+<li>open <a href="https://github.com/wsonetunnel/tunnel-server-observability/blob/main/.env">.env</a> file in this directory and fill in the below information</li>
 </ul>
 <pre><code class="hljs"><span class="hljs-attr">TELEGRAF_HOST</span>=&lt;LINUX VM IP&gt;
 
@@ -392,7 +392,7 @@ code.hljs {
 <li>Tunnel Server container already exposes port 161 for snmp stats.</li>
 <li>In UAG, enable snmp following guide <a href="https://docs.vmware.com/en/Unified-Access-Gateway/2303/uag-deploy-config/GUID-F71E6283-E24B-49F5-8AC6-D28915CD41AD.html">here</a>.</li>
 <li>Only snmp v2 is supported.</li>
-<li>Update <code>SNMP_SERVERS</code> section in <a href="https://github.com/wsonetunnel/tunnel-server-observability/.env">.env</a> to supply Tunnel Server IPs in the format <code>udp://&lt;hostname_or_ip1&gt;:161</code> for Observability stack to pull the snmp stats.</li>
+<li>Update <code>SNMP_SERVERS</code> section in <a href="https://github.com/wsonetunnel/tunnel-server-observability/blob/main/.env">.env</a> to supply Tunnel Server IPs in the format <code>udp://&lt;hostname_or_ip1&gt;:161</code> for Observability stack to pull the snmp stats.</li>
 </ul>
 <h2 id="tests">Tests</h2>
 <ol>
