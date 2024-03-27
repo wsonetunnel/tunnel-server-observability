@@ -335,8 +335,8 @@ code.hljs {
 <p><img src="./docs/arch.png" alt="arch" /></p>
 <h1 id="pre-reqs">Pre-reqs</h1>
 <ul>
-<li>Tunnel configured on UEM Console.Follow the existing steps to configure syslog in UEM Console and enabling snmp(if using UAG).</li>
-<li>Tunnel Server deployed through UAG or container</li>
+<li>Tunnel is configured on the Workspace ONE UEM Console. Follow the existing stems to configure syslog in the console and enable snmp (if using UAG).</li>
+<li>Tunnel Server deployed via UAG or container.</li>
 <li>All connectivity should be working as expected.</li>
 </ul>
 <h1 id="logging-and-telemetry">Logging and Telemetry</h1>
@@ -383,7 +383,7 @@ code.hljs {
 <ul>
 <li>Configure syslog (Linux VM IP or URL/hostname) on UEM Console and save the configuration.<ul>
 <li>This will make tunnel server send access logs to observability stack. Assumption is the syslog server runs on port 514.</li>
-<li>For application (tunnel server) logs, additional KVP settings can be configured.Starting Tunnel Server version 23.12, use below KVP to redirect tunnel application and reporter logs to syslog.</li>
+<li>For application (tunnel server) logs, additional KVP settings can be configured. Starting Tunnel Server version 23.12, use below KVP to redirect tunnel application and reporter logs to syslog.</li>
 <li>udp port 514 is supported.</li></ul></li>
 </ul>
 <p><img src="./docs/tunnelkvp.png" alt="Tunnel KVP" /></p>
