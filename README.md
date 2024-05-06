@@ -46,7 +46,7 @@ DOCKER_INFLUXDB_INIT_BUCKET=metrics
 DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=metrics
 
 GRAFANA_PORT=3000
-GRAFANA_URL=<LINUX VM IP>
+GRAFANA_URL=<LINUX VM IP> --> Not required if customer have their own Grafana Instance.
 GRAFANA_USER=<GRAFANA USERNAME>
 GRAFANA_PASSWORD=<GRAFANA PASSWORD>
 GRAFANA_PLUGINS_ENABLED=true
@@ -55,7 +55,26 @@ GRAFANA_PLUGINS=grafana-piechart-panel
 # Define as "udp://<hostname_or_ip1>:161,udp://<hostname_or_ip2>:161,udp://<hostname_or_ip3>:161"
 SNMP_SERVERS=<TUNNEL SERVER IPS IN ABOVE FORMAT>
 ```
-* Run `docker-compose up --build --force-recreate -d`
+* Run :
+```
+setup.sh with: 
+	0: if all components need to run
+	1: if everything except syslog needs to be deployed
+	2: if everthing except syslog and grafana needs to be deployed 
+```
+* If setup script above is run with mode 1, Make sure to make your syslog server forward logs to the Linux VM. Example syslog.conf
+```
+destination d_loki {
+	syslog("<LINUX VM IP>" transport("tcp") port("1514"));
+};
+
+log {
+        source(s_local);
+        source(s_network);
+        destination(d_loki);
+};
+```
+
 * Open any browser on your local OR any machine which has connectivity to the Linux VM and type `http://<linux-vm-ip>:3000`
     * You can view the logs and stats here.
 
