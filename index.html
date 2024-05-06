@@ -354,28 +354,46 @@ code.hljs {
 <li>Go to directory where repo is cloned or unzip it if zipped.</li>
 <li>open <a href="https://github.com/wsonetunnel/tunnel-server-observability/blob/main/.env">.env</a> file in this directory and fill in the below information</li>
 </ul>
-<pre><code class="hljs"><span class="hljs-attr">TELEGRAF_HOST</span>=&lt;LINUX VM IP&gt;
+<pre><code class="hljs"><span class="hljs-attribute">TELEGRAF_HOST</span>=&lt;LINUX VM IP&gt;
 
-<span class="hljs-attr">INFLUXDB_HOST</span>=&lt;LINUX VM IP&gt;
-<span class="hljs-attr">INFLUXDB_PORT</span>=<span class="hljs-number">8086</span>
-<span class="hljs-attr">DOCKER_INFLUXDB_INIT_MODE</span>=setup
-<span class="hljs-attr">DOCKER_INFLUXDB_INIT_USERNAME</span>=&lt;INFLUXDB USERNAME&gt;
-<span class="hljs-attr">DOCKER_INFLUXDB_INIT_PASSWORD</span>=&lt;INFLUXDB PASSWORD&gt;
-<span class="hljs-attr">DOCKER_INFLUXDB_INIT_ORG</span>=snmp
-<span class="hljs-attr">DOCKER_INFLUXDB_INIT_BUCKET</span>=metrics
-<span class="hljs-attr">DOCKER_INFLUXDB_INIT_ADMIN_TOKEN</span>=metrics
+<span class="hljs-attribute">INFLUXDB_HOST</span>=&lt;LINUX VM IP&gt;
+<span class="hljs-attribute">INFLUXDB_PORT</span>=8086
+<span class="hljs-attribute">DOCKER_INFLUXDB_INIT_MODE</span>=setup
+<span class="hljs-attribute">DOCKER_INFLUXDB_INIT_USERNAME</span>=&lt;INFLUXDB USERNAME&gt;
+<span class="hljs-attribute">DOCKER_INFLUXDB_INIT_PASSWORD</span>=&lt;INFLUXDB PASSWORD&gt;
+<span class="hljs-attribute">DOCKER_INFLUXDB_INIT_ORG</span>=snmp
+<span class="hljs-attribute">DOCKER_INFLUXDB_INIT_BUCKET</span>=metrics
+<span class="hljs-attribute">DOCKER_INFLUXDB_INIT_ADMIN_TOKEN</span>=metrics
 
-<span class="hljs-attr">GRAFANA_PORT</span>=<span class="hljs-number">3000</span>
-<span class="hljs-attr">GRAFANA_URL</span>=&lt;LINUX VM IP&gt; --&gt; Not required if customer have their own Grafana Instance.;
-<span class="hljs-attr">GRAFANA_USER</span>=&lt;GRAFANA USERNAME&gt;
-<span class="hljs-attr">GRAFANA_PASSWORD</span>=&lt;GRAFANA PASSWORD&gt;
-<span class="hljs-attr">GRAFANA_PLUGINS_ENABLED</span>=<span class="hljs-literal">true</span>
-<span class="hljs-attr">GRAFANA_PLUGINS</span>=grafana-piechart-panel
+<span class="hljs-attribute">GRAFANA_PORT</span>=3000
+<span class="hljs-attribute">GRAFANA_URL</span>=&lt;LINUX VM IP&gt; --&gt; <span class="hljs-keyword">Not</span> required <span class="hljs-keyword">if</span><span class="hljs-built_in"> customer </span>have their own Grafana Instance.
+<span class="hljs-attribute">GRAFANA_USER</span>=&lt;GRAFANA USERNAME&gt;
+<span class="hljs-attribute">GRAFANA_PASSWORD</span>=&lt;GRAFANA PASSWORD&gt;
+<span class="hljs-attribute">GRAFANA_PLUGINS_ENABLED</span>=<span class="hljs-literal">true</span>
+<span class="hljs-attribute">GRAFANA_PLUGINS</span>=grafana-piechart-panel
 
 <span class="hljs-comment"># Define as &quot;udp://&lt;hostname_or_ip1&gt;:161,udp://&lt;hostname_or_ip2&gt;:161,udp://&lt;hostname_or_ip3&gt;:161&quot;</span>
-<span class="hljs-attr">SNMP_SERVERS</span>=&lt;TUNNEL SERVER IPS IN ABOVE FORMAT&gt;</code></pre>
+<span class="hljs-attribute">SNMP_SERVERS</span>=&lt;TUNNEL<span class="hljs-built_in"> SERVER </span>IPS <span class="hljs-keyword">IN</span> ABOVE FORMAT&gt;</code></pre>
 <ul>
-<li>Run <code>docker-compose up --build --force-recreate -d</code></li>
+<li>Run :</li>
+</ul>
+<pre><code class="hljs">setup.<span class="hljs-keyword">sh</span> with: 
+    <span class="hljs-number">0</span>: <span class="hljs-keyword">if</span> <span class="hljs-keyword">all</span> components need <span class="hljs-keyword">to</span> run
+    <span class="hljs-number">1</span>: <span class="hljs-keyword">if</span> everything except syslog needs <span class="hljs-keyword">to</span> <span class="hljs-keyword">be</span> deployed
+    <span class="hljs-number">2</span>: <span class="hljs-keyword">if</span> everthing except syslog <span class="hljs-built_in">and</span> grafana needs <span class="hljs-keyword">to</span> <span class="hljs-keyword">be</span> deployed </code></pre>
+<ul>
+<li>If setup script above is run with mode 1, Make sure to make your syslog server forward logs to the Linux VM. Example syslog.conf</li>
+</ul>
+<pre><code class="hljs">destination d_loki {
+    <span class="hljs-built_in">syslog</span>(&quot;&lt;LINUX VM IP&gt;&quot; transport(&quot;tcp&quot;) <span class="hljs-built_in">port</span>(&quot;<span class="hljs-number">1514</span>&quot;));
+};
+
+log {
+        <span class="hljs-built_in">source</span>(s_local);
+        <span class="hljs-built_in">source</span>(s_network);
+        <span class="hljs-built_in">destination</span>(d_loki);
+};</code></pre>
+<ul>
 <li>Open any browser on your local OR any machine which has connectivity to the Linux VM and type <code>http://&lt;linux-vm-ip&gt;:3000</code><ul>
 <li>You can view the logs and stats here.</li></ul></li>
 </ul>
