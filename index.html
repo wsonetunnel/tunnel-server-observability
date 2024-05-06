@@ -394,6 +394,8 @@ log {
         <span class="hljs-built_in">destination</span>(d_loki);
 };</code></pre>
 <ul>
+<li> If setup script above is run with mode 2, apart from redirecting syslog logs as shown above, customer should add two datasources, loki(for logs) and influxdb(for metrics) retrieval.
+Refer <a href="https://github.com/wsonetunnel/tunnel-server-observability/blob/main/grafana/provisioning/datasources/loki.yaml">this</a> to configure datasource and <a href="https://github.com/wsonetunnel/tunnel-server-observability/blob/main/grafana/provisioning/dashboard/Monitoring.json">this</a> to see how to explore and view logs and metrics in your own grafana instance.
 <li>Open any browser on your local OR any machine which has connectivity to the Linux VM and type <code>http://&lt;linux-vm-ip&gt;:3000</code><ul>
 <li>You can view the logs and stats here.</li></ul></li>
 </ul>
