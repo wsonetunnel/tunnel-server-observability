@@ -349,6 +349,7 @@ code.hljs {
 <li>For Logs, 7 days of data is retained.</li></ul></li></ul></li>
 <li>Ensure, docker and docker-compose is installed on Linux VM. Run <code>docker version</code> to confirm the same.</li>
 <li>Start docker using <code>systemctl start docker</code></li></ul></li>
+<li> If log storage is local, create a user <code>loki</code> where loki would write logs locally to, though it is not recommended to be used in production.
 <li>Clone the repo on Linux VM OR download to your local,zip the entire repo and transfer it to VM.</li>
 <li>Login to VM</li>
 <li>Go to directory where repo is cloned or unzip it if zipped.</li>
