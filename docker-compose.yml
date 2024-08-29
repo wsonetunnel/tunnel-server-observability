@@ -57,6 +57,7 @@ services:
       restart: always
       volumes:
       - ./loki/loki-config-filesystem.yml:/etc/loki/loki-config.yml:ro
+      - /home/loki/:/home/loki/
     promtail:
       command: -config.file=/etc/promtail/promtail-config.yml
       container_name: promtail
