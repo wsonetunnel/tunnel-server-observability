@@ -17,7 +17,7 @@ ingester:
   chunk_retain_period: 30s    # Must be greater than index read cache TTL if using an index cache (Default index read cache TTL is 5m)
   max_transfer_retries: 0     # Chunk transfers disabled
   wal:
-    dir: "/tmp/wal"
+    dir: "/home/loki/wal"
 
 schema_config:
   configs:
@@ -31,15 +31,15 @@ schema_config:
 
 storage_config:
   boltdb_shipper:
-    active_index_directory: /tmp/loki/boltdb-shipper-active
-    cache_location: /tmp/loki/boltdb-shipper-cache
+    active_index_directory: /home/loki/boltdb-shipper-active
+    cache_location: /home/loki/boltdb-shipper-cache
     cache_ttl: 24h         # Can be increased for faster performance over longer query periods, uses more disk space
     shared_store: filesystem
   filesystem:
-    directory: /tmp/loki/chunks
+    directory: /home/loki/chunks
 
 compactor:
-  working_directory: /tmp/loki/boltdb-shipper-compactor
+  working_directory: /home/loki/boltdb-shipper-compactor
   shared_store: filesystem
 
 limits_config:
@@ -57,8 +57,8 @@ ruler:
   storage:
     type: local
     local:
-      directory: /tmp/loki/rules
-  rule_path: /tmp/loki/rules-temp
+      directory: /home/loki/rules
+  rule_path: /home/loki/rules-temp
   alertmanager_url: http://localhost:9093
   ring:
     kvstore:
