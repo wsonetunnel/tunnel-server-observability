@@ -1,335 +1,6 @@
-
-        <!DOCTYPE html>
-        <html>
-          <head>
-            <title>Tunnel Server Observability</title>
-            <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <style>
-            body {
-  font: 400 16px/1.5 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  color: #111;
-  background-color: #fdfdfd;
-  -webkit-text-size-adjust: 100%;
-  -webkit-font-feature-settings: 'kern' 1;
-  -moz-font-feature-settings: 'kern' 1;
-  -o-font-feature-settings: 'kern' 1;
-  font-feature-settings: 'kern' 1;
-  font-kerning: normal;
-  padding: 30px;
-}
-
-@media only screen and (max-width: 600px) {
-  body {
-    padding: 5px;
-  }
-
-  main {
-    padding: 0px 20px 20px 20px !important;
-  }
-}
-
-main {
-  margin: 0px;
-  max-width: 900px;
-  border: 1px solid #e1e4e8;
-  padding: 10px 40px;
-  padding-bottom: 20px;
-  border-radius: 2px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-hr {
-  color: #bbb;
-  background-color: #bbb;
-  height: 1px;
-  flex: 0 1 auto;
-  margin: 1em 0;
-  padding: 0;
-  border: none;
-}
-
-/**
- * Links
- */
-a {
-  color: #0366d6;
-  text-decoration: none;
-}
-a:visited {
-  color: #0366d6;
-}
-a:hover {
-  color: #0366d6;
-  text-decoration: underline;
-}
-
-pre {
-  background-color: #f6f8fa;
-  border-radius: 3px;
-  font-size: 85%;
-  line-height: 1.45;
-  overflow: auto;
-  padding: 16px;
-}
-
-/**
-  * Code blocks
-  */
-
-code {
-  background-color: rgba(27, 31, 35, 0.05);
-  border-radius: 3px;
-  font-size: 85%;
-  margin: 0;
-  word-wrap: break-word;
-  padding: 0.2em 0.4em;
-  font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier,
-    monospace;
-}
-
-pre > code {
-  background-color: transparent;
-  border: 0;
-  display: inline;
-  line-height: inherit;
-  margin: 0;
-  overflow: visible;
-  padding: 0;
-  word-wrap: normal;
-  font-size: 100%;
-}
-
-/**
- * Blockquotes
- */
-blockquote {
-  margin-left: 30px;
-  margin-top: 0px;
-  margin-bottom: 16px;
-  border-left-width: 3px;
-  padding: 0 1em;
-  color: #828282;
-  border-left: 4px solid #e8e8e8;
-  padding-left: 15px;
-  font-size: 18px;
-  letter-spacing: -1px;
-  font-style: italic;
-}
-blockquote * {
-  font-style: normal !important;
-  letter-spacing: 0;
-  color: #6a737d !important;
-}
-
-/**
- * Tables
- */
-table {
-  border-spacing: 2px;
-  display: block;
-  font-size: 14px;
-  overflow: auto;
-  width: 100%;
-  margin-bottom: 16px;
-  border-spacing: 0;
-  border-collapse: collapse;
-}
-
-td {
-  padding: 6px 13px;
-  border: 1px solid #dfe2e5;
-}
-
-th {
-  font-weight: 600;
-  padding: 6px 13px;
-  border: 1px solid #dfe2e5;
-}
-
-tr {
-  background-color: #fff;
-  border-top: 1px solid #c6cbd1;
-}
-
-table tr:nth-child(2n) {
-  background-color: #f6f8fa;
-}
-
-/**
- * Others
- */
-
-img {
-  max-width: 100%;
-}
-
-p {
-  line-height: 24px;
-  font-weight: 400;
-  font-size: 16px;
-  color: #24292e;
-}
-
-ul {
-  margin-top: 0;
-}
-
-li {
-  color: #24292e;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 1.5;
-}
-
-li + li {
-  margin-top: 0.25em;
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial,
-    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-  color: #24292e;
-}
-
-a:visited {
-  color: #0366d6;
-}
-
-h1,
-h2,
-h3 {
-  border-bottom: 1px solid #eaecef;
-  color: #111;
-  /* Darker */
-}
-
-            </style>
-            <style>
-            pre code.hljs {
-  display: block;
-  overflow-x: auto;
-  padding: 1em
-}
-code.hljs {
-  padding: 3px 5px
-}
-/*!
-  Theme: GitHub
-  Description: Light theme as seen on github.com
-  Author: github.com
-  Maintainer: @Hirse
-  Updated: 2021-05-15
-
-  Outdated base version: https://github.com/primer/github-syntax-light
-  Current colors taken from GitHub's CSS
-*/
-.hljs {
-  color: #24292e;
-  background: #ffffff
-}
-.hljs-doctag,
-.hljs-keyword,
-.hljs-meta .hljs-keyword,
-.hljs-template-tag,
-.hljs-template-variable,
-.hljs-type,
-.hljs-variable.language_ {
-  /* prettylights-syntax-keyword */
-  color: #d73a49
-}
-.hljs-title,
-.hljs-title.class_,
-.hljs-title.class_.inherited__,
-.hljs-title.function_ {
-  /* prettylights-syntax-entity */
-  color: #6f42c1
-}
-.hljs-attr,
-.hljs-attribute,
-.hljs-literal,
-.hljs-meta,
-.hljs-number,
-.hljs-operator,
-.hljs-variable,
-.hljs-selector-attr,
-.hljs-selector-class,
-.hljs-selector-id {
-  /* prettylights-syntax-constant */
-  color: #005cc5
-}
-.hljs-regexp,
-.hljs-string,
-.hljs-meta .hljs-string {
-  /* prettylights-syntax-string */
-  color: #032f62
-}
-.hljs-built_in,
-.hljs-symbol {
-  /* prettylights-syntax-variable */
-  color: #e36209
-}
-.hljs-comment,
-.hljs-code,
-.hljs-formula {
-  /* prettylights-syntax-comment */
-  color: #6a737d
-}
-.hljs-name,
-.hljs-quote,
-.hljs-selector-tag,
-.hljs-selector-pseudo {
-  /* prettylights-syntax-entity-tag */
-  color: #22863a
-}
-.hljs-subst {
-  /* prettylights-syntax-storage-modifier-import */
-  color: #24292e
-}
-.hljs-section {
-  /* prettylights-syntax-markup-heading */
-  color: #005cc5;
-  font-weight: bold
-}
-.hljs-bullet {
-  /* prettylights-syntax-markup-list */
-  color: #735c0f
-}
-.hljs-emphasis {
-  /* prettylights-syntax-markup-italic */
-  color: #24292e;
-  font-style: italic
-}
-.hljs-strong {
-  /* prettylights-syntax-markup-bold */
-  color: #24292e;
-  font-weight: bold
-}
-.hljs-addition {
-  /* prettylights-syntax-markup-inserted */
-  color: #22863a;
-  background-color: #f0fff4
-}
-.hljs-deletion {
-  /* prettylights-syntax-markup-deleted */
-  color: #b31d28;
-  background-color: #ffeef0
-}
-.hljs-char.escape_,
-.hljs-link,
-.hljs-params,
-.hljs-property,
-.hljs-punctuation,
-.hljs-tag {
-  /* purposely ignored */
-  
-}
-            </style>
-          </head>
-          <body>
-            <main>
-        <h1 id="overview">Overview</h1>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h1 id="overview">Overview</h1>
 <p>This document can be used as a guidance on setting up tunnel server observability (Logging and Telemetry)</p>
 <h1 id="architecture">Architecture</h1>
 <p><img src="./docs/arch.png" alt="arch" /></p>
@@ -342,14 +13,23 @@ code.hljs {
 <h1 id="logging-and-telemetry">Logging and Telemetry</h1>
 <h2 id="set-up">Set Up</h2>
 <ul>
-<li>Deploy Linux VM <ul>
-<li>Chose distribution of your choice, though Alma Linux is recommended for use. You can also choose to download <a href="https://almalinux.org/get-almalinux/">here</a><ul>
-<li>Resource recommendation of Linux VM 4 core 16GB 100 GB storage </li>
-<li>Retention policy<ul>
-<li>For Logs, 7 days of data is retained.</li></ul></li></ul></li>
+<li>Deploy Linux VM
+<ul>
+<li>Chose distribution of your choice, though Alma Linux is recommended for use. You can also choose to download <a href="https://almalinux.org/get-almalinux/">here</a>
+<ul>
+<li>Resource recommendation of Linux VM 4 core 16GB 100 GB storage</li>
+<li>Retention policy
+<ul>
+<li>For Logs, 7 days of data is retained.</li>
+</ul>
+</li>
+</ul>
+</li>
 <li>Ensure, docker and docker-compose is installed on Linux VM. Run <code>docker version</code> to confirm the same.</li>
-<li>Start docker using <code>systemctl start docker</code></li></ul></li>
-<li> If log storage is local, create a user <code>loki</code> where loki would write logs locally to, though it is not recommended to be used in production.
+<li>Start docker using <code>systemctl start docker</code></li>
+</ul>
+</li>
+<li>If log storage is local, create a user <code>loki</code> where loki would write logs locally to, though it is not recommended to be used in production.</li>
 <li>Clone the repo on Linux VM OR download to your local,zip the entire repo and transfer it to VM.</li>
 <li>Login to VM</li>
 <li>Go to directory where repo is cloned or unzip it if zipped.</li>
@@ -373,7 +53,7 @@ code.hljs {
 <span class="hljs-attribute">GRAFANA_PLUGINS_ENABLED</span>=<span class="hljs-literal">true</span>
 <span class="hljs-attribute">GRAFANA_PLUGINS</span>=grafana-piechart-panel
 
-<span class="hljs-comment"># Define as &quot;udp://&lt;hostname_or_ip1&gt;:161,udp://&lt;hostname_or_ip2&gt;:161,udp://&lt;hostname_or_ip3&gt;:161&quot;</span>
+<span class="hljs-comment"># Define as "udp://&lt;hostname_or_ip1&gt;:161,udp://&lt;hostname_or_ip2&gt;:161,udp://&lt;hostname_or_ip3&gt;:161"</span>
 <span class="hljs-attribute">SNMP_SERVERS</span>=&lt;TUNNEL<span class="hljs-built_in"> SERVER </span>IPS <span class="hljs-keyword">IN</span> ABOVE FORMAT&gt;</code></pre>
 <ul>
 <li>Run :</li>
@@ -386,7 +66,7 @@ code.hljs {
 <li>If setup script above is run with mode 1, Make sure to make your syslog server forward logs to the Linux VM. Example syslog.conf</li>
 </ul>
 <pre><code class="hljs">destination d_loki {
-    <span class="hljs-built_in">syslog</span>(&quot;&lt;LINUX VM IP&gt;&quot; transport(&quot;tcp&quot;) <span class="hljs-built_in">port</span>(&quot;<span class="hljs-number">1514</span>&quot;));
+    <span class="hljs-built_in">syslog</span>("&lt;LINUX VM IP&gt;" transport("tcp") <span class="hljs-built_in">port</span>("<span class="hljs-number">1514</span>"));
 };
 
 log {
@@ -395,17 +75,22 @@ log {
         <span class="hljs-built_in">destination</span>(d_loki);
 };</code></pre>
 <ul>
-<li> If setup script above is run with mode 2, apart from redirecting syslog logs as shown above, customer should add two datasources, loki(for logs) and influxdb(for metrics) retrieval.
-Refer <a href="https://github.com/wsonetunnel/tunnel-server-observability/blob/main/grafana/provisioning/datasources/loki.yaml">this</a> to configure datasource and <a href="https://github.com/wsonetunnel/tunnel-server-observability/blob/main/grafana/provisioning/dashboard/Monitoring.json">this</a> to see how to explore and view logs and metrics in your own grafana instance.
-<li>Open any browser on your local OR any machine which has connectivity to the Linux VM and type <code>http://&lt;linux-vm-ip&gt;:3000</code> or use your existing Grafana instance.<ul>
-<li>You can view the logs and stats here.</li></ul></li>
+<li>If setup script above is run with mode 2, apart from redirecting syslog logs as shown above, customer should add two datasources, loki(for logs) and influxdb(for metrics) retrieval. Refer <a href="https://github.com/wsonetunnel/tunnel-server-observability/blob/main/grafana/provisioning/datasources/loki.yaml">this</a> to configure datasource and <a href="https://github.com/wsonetunnel/tunnel-server-observability/blob/main/grafana/provisioning/dashboard/Monitoring.json">this</a> to see how to explore and view logs and metrics in your own grafana instance.</li>
+<li>Open any browser on your local OR any machine which has connectivity to the Linux VM and type <code>http://&lt;linux-vm-ip&gt;:3000</code> or use your existing Grafana instance.
+<ul>
+<li>You can view the logs and stats here.</li>
+</ul>
+</li>
 </ul>
 <h2 id="configuration-for-application-and-access-logs">Configuration (for Application and Access Logs)</h2>
 <ul>
-<li>Configure syslog (Linux VM IP or URL/hostname) on UEM Console and save the configuration.<ul>
+<li>Configure syslog (Linux VM IP or URL/hostname) on UEM Console and save the configuration.
+<ul>
 <li>This will make tunnel server send access logs to observability stack. Assumption is the syslog server runs on port 514.</li>
 <li>For application (tunnel server) logs, additional KVP settings can be configured. Starting Tunnel Server version 23.12, use below KVP to redirect tunnel application and reporter logs to syslog.</li>
-<li>udp port 514 is supported.</li></ul></li>
+<li>udp port 514 is supported.</li>
+</ul>
+</li>
 </ul>
 <p><img src="./docs/tunnelkvp.png" alt="Tunnel KVP" /></p>
 <h2 id="configuration-for-telemetry">Configuration (for Telemetry)</h2>
@@ -417,24 +102,24 @@ Refer <a href="https://github.com/wsonetunnel/tunnel-server-observability/blob/m
 </ul>
 <h2 id="tests">Tests</h2>
 <ol>
-<li>Enroll a device and try accessing any tunnel’ed resource from any enrolled device. </li>
+<li>Enroll a device and try accessing any tunnel&rsquo;ed resource from any enrolled device.</li>
 <li>You should start seeing the logs and stats <code>http://&lt;linux-vm-ip&gt;:3000</code></li>
 </ol>
 <p><img src="./docs/grafana.png" alt="Tunnel Stats and Logs" /></p>
 <h2 id="demo">Demo</h2>
 <h1 id="setup">Setup</h1>
-<p><strong>Setup</strong><br />
-<img src="./docs/setup.gif" alt="Setup" /></p>
+<p><strong>Setup</strong><br /> <img src="./docs/setup.gif" alt="Setup" /></p>
 <hr />
-<p><strong>Dashboard</strong><br />
-<img src="./docs/ui.gif" alt="dashboard" /></p>
+<p><strong>Dashboard</strong><br /> <img src="./docs/ui.gif" alt="dashboard" /></p>
+<h2 id="reference-documents">Further Notes</h2>
+<p>Every observability stack needs to be reliable and for it to be, there are important factors must be considered to ensure the same(which is not what this document covers)</p>
+<ul>
+<li><strong>High Availability</strong>: Visualization tools like Grafana(or any other) needs to be robust of end user's interaction of the same. While container gives you a feel of how things look like, in reality, it is recommended for customers to have their own Grafana instance to attach things to and that is the reason <code>setup.sh</code> script talks about option 2, where Grafana won't be deployed.</li>
+</ul>
 <h2 id="reference-documents">Reference documents</h2>
 <ul>
 <li><a href="https://docs.vmware.com/en/VMware-Workspace-ONE-UEM/services/VMware_Tunnel/GUID-471260BA-4DDC-4BFE-B8C3-FA2DDC2116A1.html">Syslog Configuration</a></li>
 <li><a href="https://docs.vmware.com/en/Unified-Access-Gateway/2303/uag-deploy-config/GUID-F71E6283-E24B-49F5-8AC6-D28915CD41AD.html">SNMP Configuration in UAG</a></li>
 <li><a href="https://github.com/lux4rd0/grafana-loki-syslog-aio">Syslog AIO</a></li>
-<li><a href="https://github.com/wsonetunnel/tunnel-server-observability">Github Repo for Tunnel Server Observability</li>
+<li><a href="https://github.com/wsonetunnel/tunnel-server-observability">Github Repo for Tunnel Server Observability</a></li>
 </ul>
-            </main>
-          </body>
-        </html>
