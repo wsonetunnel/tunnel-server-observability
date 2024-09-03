@@ -428,8 +428,20 @@ Refer <a href="https://github.com/wsonetunnel/tunnel-server-observability/blob/m
 <hr />
 <p><strong>Dashboard</strong><br />
 <img src="./docs/ui.gif" alt="dashboard" /></p>
+<h2 id="further-notes">Further Notes</h2>
+<li><strong>High Availability</strong>: Visualization tools like Grafana(or any other) needs to be robust of end user's interaction of 
+  the same. While container gives you a feel of how things look like, in reality, it is recommended for customers to have 
+  their own Grafana instance to attach things to and that is the reason <code>setup.sh</code> script talks about option 2, where Grafana won't be deployed.</li>
+<li><strong>RBAC</strong>: Not everyone should have access to the Grafana dashboard, 
+  and access(whether Viewer, Editor and Admin) should be role based. Customer could use 
+  their existing identity providers to integrate with their Grafana Instance.</li>
+<li><strong>Storage</strong>: Any log/metrics solution needs a trusted available storage which it can reliably write to. 
+  Loki defaults to writing to filesystem. But there are other modes to enhance loki storage(using cloud storage vendors like S3, GCP, etc.). 
+  In our testing, we have had good success with using <a href="https://min.io/">MinIO</a> (S3 like open source store) deployed on a separate node. 
+  There are existing best practices described <a href="https://grafana.com/docs/loki/latest/get-started/deployment-modes/">here</a> and <a href="https://grafana.com/docs/loki/latest/configure/storage/">here</a>), which network administrators should follow and for any other logging solution for that matter.</li>
+<li><strong>Retention Period</strong>: Storage is directly dependent on Retention Period. So customer should define 
+  the retention period for their metrics and logs and adjust Storage accordingly.</li>
 <h2 id="reference-documents">Reference documents</h2>
-<ul>
 <li><a href="https://docs.vmware.com/en/VMware-Workspace-ONE-UEM/services/VMware_Tunnel/GUID-471260BA-4DDC-4BFE-B8C3-FA2DDC2116A1.html">Syslog Configuration</a></li>
 <li><a href="https://docs.vmware.com/en/Unified-Access-Gateway/2303/uag-deploy-config/GUID-F71E6283-E24B-49F5-8AC6-D28915CD41AD.html">SNMP Configuration in UAG</a></li>
 <li><a href="https://github.com/lux4rd0/grafana-loki-syslog-aio">Syslog AIO</a></li>
