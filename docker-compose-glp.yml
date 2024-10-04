@@ -1,0 +1,57 @@
+services:
+    grafana:
+        build: ./grafana
+        container_name: grafana
+        environment:
+            GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: /opt/grafana/dashboards/GLPDashboard.json
+        ports: 
+            - ${GRAFANA_PORT}:${GRAFANA_PORT}
+        volumes:
+            - /var/lib/grafana
+            - /var/log/grafana
+            - /var/lib/grafana/plugins
+            - ./grafana/provisioning/datasources/glp/:/etc/grafana/provisioning/datasources/:ro
+        restart: always
+        env_file:
+            - .env
+        networks:
+            shared: null
+    loki:
+      command: -config.file=/etc/loki/loki-config.yml
+      container_name: loki
+      image: grafana/loki:3.0.0
+      env_file:
+          - .env
+      networks:
+        shared: null
+      ports:
+      - protocol: tcp
+        published: 3100
+        target: 3100
+      restart: always
+      volumes:
+      - ./loki/loki-config-filesystem.yml:/etc/loki/loki-config.yml:ro
+      - /tmp/:/home/loki/
+    prometheus:
+      command:
+        - --config.file=/etc/prometheus/prometheus.yml
+        - --storage.tsdb.path=/prometheus
+        - --web.enable-remote-write-receiver
+        - --web.enable-admin-api
+        - --web.enable-lifecycle
+        - --storage.tsdb.retention.time=7d
+      container_name: prometheus
+      image: prom/prometheus:latest
+      env_file:
+          - .env
+      networks:
+        shared: null
+      ports:
+      - protocol: tcp
+        published: 9090
+        target: 9090
+      restart: always
+      volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+networks:
+    shared: {}

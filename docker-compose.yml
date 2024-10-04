@@ -36,7 +36,7 @@ services:
             - /var/lib/grafana
             - /var/log/grafana
             - /var/lib/grafana/plugins
-            - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro
+            - ./grafana/provisioning/datasources/tunnel/:/etc/grafana/provisioning/datasources/tunnel/:ro
         restart: always
         env_file:
             - .env

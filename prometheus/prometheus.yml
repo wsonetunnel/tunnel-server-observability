@@ -1,0 +1,24 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      # - alertmanager:9093
+
+rule_files:
+
+remote_write:
+  - url: "http://127.0.0.1/api/v1/write"
+    # Optionally, add authentication or headers if needed
+    # basic_auth:
+    #   username: "your-username"
+    #   password: "your-password"
+    # headers:
+    #   X-Special-Header: "Special-Value"
+
+# No scrape configurations since we are not scraping any targets.
+scrape_configs: []
