@@ -10,6 +10,7 @@ RUN apt-get -q update &&\
 
 RUN mkdir -p /opt/grafana/dashboards
 ADD ./provisioning/dashboard/Monitoring.json /opt/grafana/dashboards/
+ADD ./provisioning/dashboard/GLPDashboard.json /opt/grafana/dashboards/
 ADD ./provisioning/dashboard/default-dashboard.yaml /etc/grafana/provisioning/dashboards/
 
 ADD run.sh /run.sh

@@ -1,0 +1,41 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 2,
+    "links": [],
+    "liveNow": false,
+    "panels": [],
+    "refresh": "",
+    "schemaVersion": 38,
+    "tags": [],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "MPC Dashboard",
+    "uid": "d9d698fc-f152-446b-90b3-d32092c1e58a",
+    "version": 2,
+    "weekStart": ""
+  }
