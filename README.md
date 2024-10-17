@@ -110,6 +110,8 @@ log {
 **Dashboard**
 ![dashboard](./docs/ui.gif)
 
+## Other WS1 Components
+
 ## Reference documents
 
 * [Syslog Configuration](https://docs.vmware.com/en/VMware-Workspace-ONE-UEM/services/VMware_Tunnel/GUID-471260BA-4DDC-4BFE-B8C3-FA2DDC2116A1.html)
