@@ -1,26 +1,23 @@
-Overview
-========
+# Overview
 
-This repo can be used as a recommendation for guidance on setting up tunnel server observability (Logging and Telemetry)
+This repo can be used as a recommendation for guidance on setting up tunnel server observability (Logging and Telemetry) and other WS1 components.
 
-Architecture
-============
+## Tunnel
+
+### Architecture
 
 ![arch](./docs/arch.png)
 
-Pre-reqs
-========
+### Pre-reqs
 
 * Tunnel configured on UEM Console.Follow the existing steps to configure syslog in UEM Console and enabling snmp(if using UAG).
 * Tunnel Server deployed through UAG or container
 * All connectivity should be working as expected.
 
 
-Logging and Telemetry
-=====================
+### Logging and Telemetry
 
-Set Up
-------
+#### Set Up
 
 * Deploy Linux VM 
     * Chose distribution of your choice, though Alma Linux is recommended for use. You can also choose to download [here](https://almalinux.org/get-almalinux/)
@@ -80,8 +77,7 @@ log {
 * Open any browser on your local OR any machine which has connectivity to the Linux VM and type `http://<linux-vm-ip>:3000` or use your existing Grafana instance.
     * You can view the logs and stats here.
 
-Configuration (for Application and Access Logs)
-----------------------------
+#### Configuration (for Application and Access Logs)
 
 * Configure syslog (Linux VM IP or URL/hostname) on UEM Console and save the configuration.
     * This will make tunnel server send access logs to observability stack. Assumption is the syslog server runs on port 514.
@@ -90,26 +86,23 @@ Configuration (for Application and Access Logs)
 
 ![Tunnel KVP](./docs/tunnelkvp.png)
 
-Configuration (for Telemetry)
-----------------------------
+#### Configuration (for Telemetry)
 
 * Tunnel Server container already exposes port 161 for snmp stats.
 * In UAG, enable snmp following guide [here](https://docs.vmware.com/en/Unified-Access-Gateway/2303/uag-deploy-config/GUID-F71E6283-E24B-49F5-8AC6-D28915CD41AD.html).
 * Only snmp v2 is supported.
 * Update `SNMP_SERVERS` section in [.env](./.env) to supply Tunnel Server IPs in the format `udp://<hostname_or_ip1>:161` for Observability stack to pull the snmp stats.
 
-Tests
------
+### Tests
 
 1. Enroll a device and try accessing any tunnel’ed resource from any enrolled device. 
 2. You should start seeing the logs and stats `http://<linux-vm-ip>:3000`
 
 ![Tunnel Stats and Logs](./docs/grafana.png)
 
-Demo
-----
-Setup
-=======
+### Demo
+
+### Setup
 **Setup**
 ![Setup](./docs/setup.gif)
 
@@ -117,8 +110,7 @@ Setup
 **Dashboard**
 ![dashboard](./docs/ui.gif)
 
-Reference documents
--------------------
+## Reference documents
 
 * [Syslog Configuration](https://docs.vmware.com/en/VMware-Workspace-ONE-UEM/services/VMware_Tunnel/GUID-471260BA-4DDC-4BFE-B8C3-FA2DDC2116A1.html)
 * [SNMP Configuration in UAG](https://docs.vmware.com/en/Unified-Access-Gateway/2303/uag-deploy-config/GUID-F71E6283-E24B-49F5-8AC6-D28915CD41AD.html)
