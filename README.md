@@ -116,6 +116,25 @@ log {
 
 ![arch](./docs/arch_other.png)
 
+### Logging and Telemetry
+
+#### Set Up
+
+* Deploy Linux VM 
+    * Chose distribution of your choice, though Alma Linux is recommended for use. You can also choose to download [here](https://almalinux.org/get-almalinux/)
+        * Resource recommendation of Linux VM 4 core 16GB 200 GB storage 
+        * Retention policy
+            * For Logs, 7 days of data is retained.
+    * Ensure, docker and docker-compose is installed on Linux VM. Run `docker version` to confirm the same.
+    * Start docker using `systemctl start docker`
+    * Add the user `loki` using `useradd` command if you intent to make loki write logs on local store as the `/home/loki` directory would be volume mounted into the loki container.
+* Clone the repo on Linux VM OR download to your local,zip the entire repo and transfer it to VM.
+* Login to VM
+* Go to directory where repo is cloned or unzip it if zipped.
+* open [.env](./.env) file in this directory and change the `GRAFANA_URL=<LINUX VM IP>` with the actual VM IP.
+* Run `setup.sh ws1all` which will deploy Loki, Prometheus and Grafana.
+* You can use the Loki URL to send logs from your stack into the observability stack and prometheus remote write url to send out telemetry.
+
 ## Reference documents
 
 * [Syslog Configuration](https://docs.vmware.com/en/VMware-Workspace-ONE-UEM/services/VMware_Tunnel/GUID-471260BA-4DDC-4BFE-B8C3-FA2DDC2116A1.html)
