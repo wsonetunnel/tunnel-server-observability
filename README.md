@@ -56,9 +56,9 @@ SNMP_SERVERS=<TUNNEL SERVER IPS IN ABOVE FORMAT>
 * Run :
 ```
 setup.sh with: 
-	0: if all components need to run
-	1: if everything except syslog needs to be deployed
-	2: if everthing except syslog and grafana needs to be deployed 
+	tunall: if all components need to run
+	tunall-sys: if everything except syslog needs to be deployed
+	tunall-sys-gra: if everthing except syslog and grafana needs to be deployed 
 ```
 * If setup script above is run with mode 1, Make sure to make your syslog server forward logs to the Linux VM. Example syslog.conf
 ```
