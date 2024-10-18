@@ -380,11 +380,11 @@ code.hljs {
 <li>Run :</li>
 </ul>
 <pre><code class="hljs">setup.<span class="hljs-keyword">sh</span> with: 
-    <span class="hljs-number">0</span>: <span class="hljs-keyword">if</span> <span class="hljs-keyword">all</span> components need <span class="hljs-keyword">to</span> run
-    <span class="hljs-number">1</span>: <span class="hljs-keyword">if</span> everything except syslog needs <span class="hljs-keyword">to</span> <span class="hljs-keyword">be</span> deployed
-    <span class="hljs-number">2</span>: <span class="hljs-keyword">if</span> everthing except syslog <span class="hljs-built_in">and</span> grafana needs <span class="hljs-keyword">to</span> <span class="hljs-keyword">be</span> deployed </code></pre>
+    <span class="hljs-number">tunall</span>: <span class="hljs-keyword">if</span> <span class="hljs-keyword">all</span> components need <span class="hljs-keyword">to</span> run
+    <span class="hljs-number">tunall-sys</span>: <span class="hljs-keyword">if</span> everything except syslog needs <span class="hljs-keyword">to</span> <span class="hljs-keyword">be</span> deployed
+    <span class="hljs-number">tunall-sys-gra</span>: <span class="hljs-keyword">if</span> everthing except syslog <span class="hljs-built_in">and</span> grafana needs <span class="hljs-keyword">to</span> <span class="hljs-keyword">be</span> deployed </code></pre>
 <ul>
-<li>If setup script above is run with mode 1, Make sure to make your syslog server forward logs to the Linux VM. Example syslog.conf</li>
+<li>If setup script above is run with mode tunall-sys, Make sure to make your syslog server forward logs to the Linux VM. Example syslog.conf</li>
 </ul>
 <pre><code class="hljs">destination d_loki {
     <span class="hljs-built_in">syslog</span>(&quot;&lt;LINUX VM IP&gt;&quot; transport(&quot;tcp&quot;) <span class="hljs-built_in">port</span>(&quot;<span class="hljs-number">1514</span>&quot;));
@@ -396,7 +396,7 @@ log {
         <span class="hljs-built_in">destination</span>(d_loki);
 };</code></pre>
 <ul>
-<li> If setup script above is run with mode 2, apart from redirecting syslog logs as shown above, customer should add two datasources, loki(for logs) and influxdb(for metrics) retrieval.
+<li> If setup script above is run with mode tunall-sys-gra, apart from redirecting syslog logs as shown above, customer should add two datasources, loki(for logs) and influxdb(for metrics) retrieval.
 Refer <a href="https://github.com/wsonetunnel/tunnel-server-observability/blob/main/grafana/provisioning/datasources/loki.yaml">this</a> to configure datasource and <a href="https://github.com/wsonetunnel/tunnel-server-observability/blob/main/grafana/provisioning/dashboard/Monitoring.json">this</a> to see how to explore and view logs and metrics in your own grafana instance.
 <li>Open any browser on your local OR any machine which has connectivity to the Linux VM and type <code>http://&lt;linux-vm-ip&gt;:3000</code> or use your existing Grafana instance.<ul>
 <li>You can view the logs and stats here.</li></ul></li>
