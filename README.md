@@ -1,8 +1,8 @@
 # Overview
 
-This repo can be used as a recommendation for guidance on setting up tunnel server observability (Logging and Telemetry) and other WS1 components.
+This repo can be used as a recommendation for guidance on setting up observability for tunnel server and other WS1 components.
 
-## Tunnel
+## Tunnel Server
 
 ### Architecture
 
@@ -13,7 +13,6 @@ This repo can be used as a recommendation for guidance on setting up tunnel serv
 * Tunnel configured on UEM Console.Follow the existing steps to configure syslog in UEM Console and enabling snmp(if using UAG).
 * Tunnel Server deployed through UAG or container
 * All connectivity should be working as expected.
-
 
 ### Logging and Telemetry
 
@@ -60,7 +59,7 @@ setup.sh with:
 	tunall-sys: if everything except syslog needs to be deployed
 	tunall-sys-gra: if everthing except syslog and grafana needs to be deployed 
 ```
-* If setup script above is run with mode 1, Make sure to make your syslog server forward logs to the Linux VM. Example syslog.conf
+* If setup script above is run with mode tunnel-sys, Make sure to make your syslog server forward logs to the Linux VM. Example syslog.conf
 ```
 destination d_loki {
 	syslog("<LINUX VM IP>" transport("tcp") port("1514"));
@@ -72,7 +71,7 @@ log {
         destination(d_loki);
 };
 ```
-*  If setup script above is run with mode 2, apart from redirecting syslog logs as shown above, customer should add two datasources, loki(for logs) and influxdb(for metrics) retrieval.Refer [this](https://github.com/wsonetunnel/tunnel-server-observability/blob/main/grafana/provisioning/datasources/loki.yaml) to configure datasource and [this](https://github.com/wsonetunnel/tunnel-server-observability/blob/main/grafana/provisioning/dashboard/Monitoring.json) to see how to explore and view logs and metrics in your own grafana instance.
+*  If setup script above is run with mode tunnel-sys-gra, apart from redirecting syslog logs as shown above, customer should add two datasources, loki(for logs) and influxdb(for metrics) retrieval.Refer [this](https://github.com/wsonetunnel/ws1-components-observability/blob/main/grafana/provisioning/datasources/loki.yaml) to configure datasource and [this](https://github.com/wsonetunnel/ws1-components-observability/blob/main/grafana/provisioning/dashboard/Monitoring.json) to see how to explore and view logs and metrics in your own grafana instance.
 
 * Open any browser on your local OR any machine which has connectivity to the Linux VM and type `http://<linux-vm-ip>:3000` or use your existing Grafana instance.
     * You can view the logs and stats here.
@@ -133,7 +132,9 @@ log {
 * Go to directory where repo is cloned or unzip it if zipped.
 * open [.env](./.env) file in this directory and change the `GRAFANA_URL=<LINUX VM IP>` with the actual VM IP.
 * Run `setup.sh ws1all` which will deploy Loki, Prometheus and Grafana.
-* You can use the Loki URL to send logs from your stack into the observability stack and prometheus remote write url to send out telemetry.
+* You can use the Loki URL to send logs from your product to the observability stack and use the prometheus remote write url to send out telemetry.
+* Once done, Open any browser on your local OR any machine which has connectivity to the Linux VM and type `http://<linux-vm-ip>:3000`.
+    * You can view the logs and stats here.
 
 ## Reference documents
 
