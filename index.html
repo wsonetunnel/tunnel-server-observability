@@ -448,7 +448,7 @@ Refer <a href="https://github.com/wsonetunnel/tunnel-server-observability/blob/m
 <li>Go to directory where repo is cloned or unzip it if zipped.</li>
 <li>open <a href="https://github.com/wsonetunnel/ws1-components-observability/blob/main/.env">.env</a> and change the <code>GRAFANA_URL=&lt;LINUX VM IP&gt;</code> with the actual VM IP.</li>
 <li>Run <code>setup.sh ws1all</code> which will deploy Loki, Prometheus and Grafana.</li>
-<li>You can use the Loki URL to send logs from your product to the observability stack and use the prometheus remote write url to send out telemetry.</li>
+<li>You can use the Loki URL(<code>http://&lt;LINUX_VM_IP&gt;:3100/loki/api/v1/push</code>) to send logs from your product to the observability stack and use the prometheus remote write url(<code>http://&lt;LINUX_VM_IP&gt;:9090/api/v1/write</code>) to send out telemetry.</li>
 <li>Open any browser on your local OR any machine which has connectivity to the Linux VM and type <code>http://&lt;linux-vm-ip&gt;:3000</code>.<ul>
 <li>You can view the logs and stats here.</li></ul></li>
 </ul>
