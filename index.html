@@ -429,6 +429,29 @@ Refer <a href="https://github.com/wsonetunnel/tunnel-server-observability/blob/m
 <hr />
 <p><strong>Dashboard</strong><br />
 <img src="./docs/ui.gif" alt="dashboard" /></p>
+<h1>Other WS1 Components</h1>
+<h1>Architecture</h1>
+<p><img src="./docs/arch_other.png" alt="arch_other" /></p> 
+<h1 id="logging-and-telemetry">Logging and Telemetry</h1>
+<h2 id="set-up">Set Up</h2>
+<ul>
+<li>Deploy Linux VM <ul>
+<li>Chose distribution of your choice, though Alma Linux is recommended for use. You can also choose to download <a href="https://almalinux.org/get-almalinux/">here</a><ul>
+<li>Resource recommendation of Linux VM 4 core 16GB 100 GB storage </li>
+<li>Retention policy<ul>
+<li>For Logs, 7 days of data is retained.</li></ul></li></ul></li>
+<li>Ensure, docker and docker-compose is installed on Linux VM. Run <code>docker version</code> to confirm the same.</li>
+<li>Start docker using <code>systemctl start docker</code></li></ul></li>
+<li> If log storage is local, create a user <code>loki</code> where loki would write logs locally to, though it is not recommended to be used in production.
+<li>Clone the repo on Linux VM OR download to your local,zip the entire repo and transfer it to VM.</li>
+<li>Login to VM</li>
+<li>Go to directory where repo is cloned or unzip it if zipped.</li>
+<li>open <a href="https://github.com/wsonetunnel/ws1-components-observability/blob/main/.env">.env</a> and change the <code>GRAFANA_URL=<LINUX VM IP></code> with the actual VM IP.</li>
+<li>Run <code>setup.sh ws1all</code> which will deploy Loki, Prometheus and Grafana.</li>
+<li>You can use the Loki URL to send logs from your product to the observability stack and use the prometheus remote write url to send out telemetry.</li>
+<li>Open any browser on your local OR any machine which has connectivity to the Linux VM and type <code>http://&lt;linux-vm-ip&gt;:3000</code>.<ul>
+<li>You can view the logs and stats here.</li></ul></li>
+</ul>
 <h2 id="further-notes">Further Notes</h2>
 <li><strong>High Availability</strong>: Visualization tools like Grafana(or any other) needs to be robust of end user's interaction of 
   the same. While container gives you a feel of how things look like, in reality, it is recommended for customers to have 
